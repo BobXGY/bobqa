@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}我的资料{% endblock %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/my_info.css') }}">
+{% endblock %}
+
+{% block main %}
+    <div class="info-main">
+        <div class="left-container">
+            <div class="avatar-group">
+                <img src="{{ url_for('static', filename='images/logo.jpg') }}" class="avatar">
+            </div>
+        </div>
+        <div class="right-container">
+            <div class="info-container">
+                <div class="panel panel-primary">
+                  <div class="panel-heading">用户名：</div>
+                  <div class="panel-body">{{ user.username }}</div>
+                </div>
+
+                <div class="panel panel-info">
+                  <div class="panel-heading">
+                    <h3 class="panel-title">手机号：</h3>
+                  </div>
+                  <div class="panel-body">{{ user.telephone }}</div>
+                </div>
+
+
+                <div class="panel panel-info">
+                  <div class="panel-heading">
+                    <h3 class="panel-title">ID:</h3>
+                  </div>
+                  <div class="panel-body">{{ user.id }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr>
+
+{% endblock %}

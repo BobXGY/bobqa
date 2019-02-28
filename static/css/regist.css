@@ -1,0 +1,10 @@
+.form-container{
+    width: 400px;
+    margin: 0 auto;
+}
+
+#submit-btn{
+    width: 100px;
+    float: right;
+}
+

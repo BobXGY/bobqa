@@ -1,0 +1,25 @@
+.main{
+    background-color: #fff;
+    max-width: 960px;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+body{
+    padding-top: 10px;
+    background-color: #eeeeee;
+}
+
+.page-title{
+    text-align: center;
+}
+
+.main{
+    border-radius: 10px;
+}
+
+.navbar{
+    max-width: 1440px;
+    margin-left: auto;
+    margin-right: auto;
+}
