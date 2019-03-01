@@ -26,5 +26,5 @@ with open('config/key', 'rb') as f:
     key = f.readline()
 
 SECRET_KEY = key
-SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:3699@localhost/bobqa?charset=utf8'
+SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:3699@127.0.0.1/bobqa?charset=utf8'
 SQLALCHEMY_TRACK_MODIFICATIONS = False
