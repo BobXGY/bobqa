@@ -15,10 +15,15 @@
         <p class="question-info">
             <span>作者：{{ question.author.username }}</span>
             <span>时间：{{ question.create_time }}</span>
+            {% if owner %}  {#    如果是文章作者则显示删除按钮    #}
+                <button class="btn">
+                    <a href="{{ url_for('delete_item', question_id=question_id) }}">删除此帖</a>
+                </button>
+            {% endif %}
         </p>
-        <hr>
+        <hr style="border-top: 1px solid #aaa">
         <p class="question-content">{{ question.content }}</p>
-        <hr>
+        <hr style="border-top: 1px solid #aaa">
         <h4 class="answer-lenth">当前评论数：{{ question.answers|length }}</h4>
         <form action="{{ url_for('add_answer') }}" method="post">
             <div class="form-group">
@@ -29,6 +34,7 @@
                 <input type="submit" class="btn btn-primary" value="提交评论">
             </div>
         </form>
+
         <ul class="answer-list">
             {% for answer in question.answers %}
                 <li>
@@ -49,6 +55,7 @@
             var md = parser.makeHtml(text);
             document.querySelector(".question-content").innerHTML = md;
         }
+
         parse();
     </script>
 {% endblock %}

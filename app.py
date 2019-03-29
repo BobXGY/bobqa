@@ -14,17 +14,30 @@ def main():
     return redirect(url_for('index'))
 
 
-@app.route('/index/')
+@app.route('/index/', methods=['GET', 'POST'])
 def index():
-    context = {
-        # 按create_time字段排序，若要逆序，只需在字符串前加上'-'
-        'questions': Question.query.order_by('-create_time').all()
-    }
+    if request.method == 'GET':
+        context = {
+            # 按create_time字段排序，若要逆序，只需在字符串前加上'-'
+            'questions': Question.query.order_by('-create_time').all()
+        }
+    elif request.method == 'POST':
+        search_key = request.form.get('key')
+        context = {
+            # 按create_time字段排序，若要逆序，只需在字符串前加上'-'
+            'questions': Question.query.filter(Question.title.ilike('%' + search_key + '%')).order_by(
+                '-create_time').all()
+        }
+
     return render_template('index.html', **context)
 
 
 @app.route('/login/', methods=['GET', 'POST'])
 def login():
+    """
+    登陆
+    :return:
+    """
     if request.method == 'GET':
         return render_template('login.html')
     elif request.method == 'POST':
@@ -33,7 +46,8 @@ def login():
         user = User.query.filter(User.telephone == telephone, User.password == password).first()
         if user:
             session['user_id'] = user.id
-            session.permanent = True
+            if request.form.get('hold') == 'on':
+                session.permanent = True
             return redirect(url_for('index'))
         else:
             return '用户不存在或者密码错误'
@@ -41,6 +55,10 @@ def login():
 
 @app.route('/regist/', methods=['GET', 'POST'])
 def regist():
+    """
+    注册
+    :return:
+    """
     if request.method == 'GET':
         return render_template('regist.html')
     else:
@@ -68,6 +86,11 @@ def regist():
 @app.route('/question/', methods=['GET', 'POST'])
 @login_required
 def question():
+    """
+    GET请求则返回发帖页面
+    POST则是创建帖子
+    :return:
+    """
     if request.method == 'GET':
         return render_template('question.html')
     else:
@@ -84,15 +107,51 @@ def question():
 
 @app.route('/logout/')
 def logout():
+    """
+    注销登陆
+    :return:
+    """
     session.pop('user_id')
     return redirect(url_for('login'))
 
 
 @app.route('/detail/<question_id>')
 def detail(question_id):
+    """
+    帖子详情
+    :param question_id: 帖子id
+    :return:
+    """
+    question_ = Question.query.filter(Question.id == question_id).first()
+    owner = None
+    current_user_id = session.get('user_id')
+    article_author_id = question_.author_id
+    if current_user_id == article_author_id:
+        owner = True
+
+    return render_template('detail.html', question=question_, question_id=question_id, owner=owner)
+
+
+@app.route('/delete/<question_id>')
+def delete_item(question_id):
+    """
+    删除帖子, 先删除所有回复，再删除帖子
+    :return:
+    """
     question_ = Question.query.filter(Question.id == question_id).first()
 
-    return render_template('detail.html', question=question_)
+    current_user_id = session.get('user_id')
+    article_author_id = question_.author_id
+
+    if article_author_id == current_user_id:
+        answers = Answer.query.filter(Answer.question_id == question_id).all()
+        for each_answer in answers:
+            db.session.delete(each_answer)
+        db.session.delete(question_)
+        db.session.commit()
+        return "删除成功，点击返回<a href=\"" + url_for('index') + "\">主页</a>"
+    else:
+        return "未获授权"
 
 
 @app.route('/my_info/')
@@ -104,6 +163,10 @@ def my_info():
 @app.route('/add_answer/', methods=['POST'])
 @login_required
 def add_answer():
+    """
+    给帖子添加回复
+    :return:
+    """
     content = request.form.get('answer-content')
     question_id = request.form.get('question_id')
 
