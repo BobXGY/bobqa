@@ -1,13 +1,17 @@
 .main{
-    background-color: #fff;
-    max-width: 960px;
+    background-color: rgba(242,242,242,0.8);
+    max-width: 1024px;
     margin: 0 auto;
     overflow: hidden;
 }
 
 body{
     padding-top: 10px;
-    background-color: #eeeeee;
+    background-image: url(/static/images/bg.jpg);
+    background-repeat: no-repeat;
+    background-size: 2560px 1440px;
+    background-position: center;
+    background-attachment: fixed;
 }
 
 .page-title{
@@ -15,11 +19,13 @@ body{
 }
 
 .main{
+    margin-top: 100px;
     border-radius: 10px;
 }
 
 .navbar{
-    max-width: 1440px;
     margin-left: auto;
     margin-right: auto;
+    position: fixed;
+    width: 100%;
 }

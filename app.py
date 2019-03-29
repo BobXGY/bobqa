@@ -27,7 +27,7 @@ def index():
 def login():
     if request.method == 'GET':
         return render_template('login.html')
-    else:
+    elif request.method == 'POST':
         telephone = request.form.get('telephone')
         password = request.form.get('password')
         user = User.query.filter(User.telephone == telephone, User.password == password).first()

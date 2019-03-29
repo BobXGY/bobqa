@@ -1,6 +1,6 @@
 from os import system
 
-DEBUG = True
+# DEBUG = True
 
 '''使用文件key中的内容作为盐，若不存在则创建文件'''
 try:
@@ -26,5 +26,5 @@ with open('config/key', 'rb') as f:
     key = f.readline()
 
 SECRET_KEY = key
-SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:3699@127.0.0.1/bobqa?charset=utf8'
+SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:3699@127.0.0.1/bobqa?charset=utf8mb4'
 SQLALCHEMY_TRACK_MODIFICATIONS = False
